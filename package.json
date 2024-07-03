@@ -10,5 +10,8 @@
   "description": "",
   "devDependencies": {
     "testcafe": "^3.6.1"
+  },
+  "dependencies": {
+    "short-uuid": "^5.2.0"
   }
 }

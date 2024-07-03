@@ -1,35 +1,40 @@
-import { Selector } from 'testcafe';
+import { Selector, t } from 'testcafe';
 
 class NewDevicePage {
   constructor() {
-    this.formContainer = Selector('.device-form');
-    this.nameInput = this.formContainer.find('#system_name');
-    this.typeSelect = this.formContainer.find('#type');
-    this.capacityInput = this.formContainer.find('#hdd_capacity');
-    this.saveButton = this.formContainer.find('.submitButton');
+    this.nameInput = Selector('#system_name');
+    this.typeSelect = Selector('#type');
+    this.typeOption = this.typeSelect.find('option');
+    this.capacityInput = Selector('#hdd_capacity');
+    this.saveButton = Selector('.submitButton');
   }
 
-  async setName(name) {
-    await this.nameInput.set(name);
+  async typeName(name){
+    await t.typeText(this.nameInput, name);
   }
 
-  async setType(type) {
-    await this.typeSelect.select(type);
+  async selectType(type) {
+    await t
+    .click(this.typeSelect)
+    .click(this.typeOption.withText(type))
+    .expect(this.typeSelect.value).eql(type);
   }
 
-  async setCapacity(capacity) {
-    await this.capacityInput.set(capacity);
+  async typeCapacity(capacity){
+    await t.typeText(this.capacityInput, capacity);
   }
 
-  async clickSave() {
-    await click(this.saveButton);
+  async clickOnSave () {
+    await t.click(this.saveButton);
   }
 
   async fillNewDeviceForm(name, type, capacity) {
-    await this.setName(name);
-    await this.setType(type);
-    await this.setCapacity(capacity);
+    this.typeName(name);
+    this.selectType(type);
+    this.typeCapacity(capacity);
+    this.clickOnSave();
   }
+
 }
 
 export default new NewDevicePage();
