@@ -1,3 +1,5 @@
+require('dotenv').config();
+const uiBaseUrl = process.env.UI_BASEURL;
 import DeviceListPage from "../pageObjects/DeviceListPage";
 import NewDevicePage from "../pageObjects/NewDevicePage";
 import { Device } from '../models/Device';
@@ -6,7 +8,7 @@ import { getRandomDeviceType, getRandomNumberString, uuidGenerator } from "../ut
 import { getDevices, updateDevice, deleteDevice } from '../api/Devices';
 
 
-fixture`e2e tests for device list`.page("http://localhost:3001");
+fixture`e2e tests for device list`.page(uiBaseUrl);
 
   test('Test 1: Compare API and UI device lists matches, and verify edit and remove buttons are visible', async (t) => {
     //Step 1: Make an API call to retrieve the list of devices.

@@ -1,5 +1,5 @@
-//This manual test use RestClient vsCode Extension 
-//these file is just for testing purpposes, and is not related with the code itself
+//This manual tests use RestClient vsCode Extension 
+//these file is just for testing purposes, and is not related with the code itself
 
 ###GET DEVICE LIST
 GET http://localhost:3000/devices

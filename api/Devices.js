@@ -1,5 +1,6 @@
+require('dotenv').config();
+const apiBaseUrl = process.env.API_BASEURL;
 import { t } from 'testcafe';
-const apiBaseUrl = 'http://localhost:3000/devices';
 
 export async function getDevices() {
     return await t.request({
