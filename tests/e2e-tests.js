@@ -3,7 +3,7 @@ import NewDevicePage from "../pageObjects/NewDevicePage";
 import { Device } from '../models/Device';
 import { compareListOfDevices } from '../utils/CompareDevices';
 import { getRandomDeviceType, getRandomNumberString, uuidGenerator } from "../utils/RandomGenerator";
-import { getDevices, updateDevice } from '../api/Devices';
+import { getDevices, updateDevice, deleteDevice } from '../api/Devices';
 
 
 fixture`e2e tests for device list`.page("http://localhost:3001");
@@ -27,7 +27,7 @@ fixture`e2e tests for device list`.page("http://localhost:3001");
     }
   });
 
-  test('Test 2: Create Device and verify its existance on the list', async (t) => {
+  test('Test 2: Create device and verify its existance on the list', async (t) => {
     //Step 1: Verify that devices can be created properly using the UI.
     DeviceListPage.clickOnaddDevice();
     const uuIdSuffix = uuidGenerator();
@@ -40,7 +40,7 @@ fixture`e2e tests for device list`.page("http://localhost:3001");
     await t.expect(DeviceListPage.getDeviceCapacity(newDevice.systemName).innerText).contains(newDevice.hddCapacity);
   });
 
-  test('Test 3: Rename device on API and verify changes are reflected in UI', async (t) => {
+  test('Test 3: Rename first device on API and verify changes are reflected in UI', async (t) => {
     //Step 1: Make an API call that renames the first device of the list to “Renamed Device”.
     const getDevicesResponse = await getDevices();
     await t.expect(getDevicesResponse.status).eql(200);
@@ -54,4 +54,20 @@ fixture`e2e tests for device list`.page("http://localhost:3001");
     //Step 2: Reload the page and verify the modified device has the new name.
     await t.eval(() => window.location.reload(true));
     await t.expect(DeviceListPage.getDeviceByName(newDeviceName).visible).ok(`Device ${newDeviceName} should be visible`);
+  });
+
+  test('Test 4: Delete last device on API and verify changes are reflected in UI', async (t) => {
+    //Step 1: Make an API call that deletes the last element of the list.
+    const getDevicesResponse = await getDevices();
+    await t.expect(getDevicesResponse.status).eql(200);
+    const apiDevices = getDevicesResponse.body.map(device => new Device(...Object.values(device)));
+    const lastDeviceId = apiDevices.length > 0 ? apiDevices[apiDevices.length-1].id : null;
+    const lastDeviceName = apiDevices.length > 0 ? apiDevices[apiDevices.length-1].systemName : null;
+    const deleteDeviceResponse = await deleteDevice(lastDeviceId);
+    await t.expect(deleteDeviceResponse.status).eql(200);
+
+    //Step 2: Reload the page and verify the element is no longer visible and it doesn’t exist in the DOM.
+    await t.expect(DeviceListPage.getDeviceByName(lastDeviceName).visible).ok(`Device ${lastDeviceName} should be visible before reloading`);
+    await t.eval(() => window.location.reload(true));
+    await t.expect(DeviceListPage.getDeviceByName(lastDeviceName).visible).notOk(`Device ${lastDeviceName} should NOT be visible`);
   });

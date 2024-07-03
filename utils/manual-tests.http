@@ -1,4 +1,5 @@
-###This manual test use RestClient vsCode Extension
+//This manual test use RestClient vsCode Extension 
+//these file is just for testing purpposes, and is not related with the code itself
 
 ###GET DEVICE LIST
 GET http://localhost:3000/devices
@@ -7,7 +8,7 @@ GET http://localhost:3000/devices
 GET http://localhost:3000/devices/Th3ngERn9
 
 ###DELETE DEVICE BY ID
-DELETE http://localhost:3000/devices/tU2-yrHVc
+DELETE http://localhost:3000/devices/sstEsXXMK
 
 ###POST DEVICE
 POST http://localhost:3000/devices

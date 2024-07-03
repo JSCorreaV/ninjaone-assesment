@@ -34,7 +34,6 @@ class NewDevicePage {
     this.typeCapacity(capacity);
     this.clickOnSave();
   }
-
 }
 
 export default new NewDevicePage();
