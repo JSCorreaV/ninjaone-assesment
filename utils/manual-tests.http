@@ -1,0 +1,30 @@
+###This manual test use RestClient vsCode Extension
+
+###GET DEVICE LIST
+GET http://localhost:3000/devices
+
+###GET DEVICE BY ID
+GET http://localhost:3000/devices/Th3ngERn9
+
+###DELETE DEVICE BY ID
+DELETE http://localhost:3000/devices/tU2-yrHVc
+
+###POST DEVICE
+POST http://localhost:3000/devices
+Content-Type: application/json
+
+{
+    "system_name": "DESKTOP-ONE2",
+    "type": "WINDOWS",
+    "hdd_capacity": "92"
+}
+
+###POST DEVICE
+PUT http://localhost:3000/devices/JvHxqyVfs
+Content-Type: application/json
+
+{
+    "system_name": "DESKTOP-ONE2",
+    "type": "MAC",
+    "hdd_capacity": "100"
+}
