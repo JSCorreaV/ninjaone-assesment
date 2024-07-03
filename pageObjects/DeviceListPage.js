@@ -1,27 +1,55 @@
 import { Selector, t } from "testcafe";
-import { Device } from '../models/DeviceListModel';
+import { Device } from '../models/Device';
 
 class DeviceListPage {
     constructor(){
-        this.addDevice = Selector(".submitButton");
-        this.deviceList = Selector(".device-info");
+        this.addDeviceButton = Selector('.submitButton');
+        this.deviceInfoList = Selector(".device-info");
+        this.deviceNameSelector = Selector(".device-name");
       }
 
+    async clickOnaddDevice() {
+      await t.click(this.addDeviceButton);
+    }
+
     async getDeviceCount() {
-        // Get the number of devices by counting the elements in the list
-        return await this.deviceList.count;
-      }
+      return await this.deviceInfoList.count;
+    }
+
+    getDeviceByName(deviceName) {
+      return Selector('div').withText(deviceName).nth(5);
+    }
+
+    getDeviceEditButtonByName(deviceName) {
+      return this.getDeviceByName(deviceName).child("div").child('.device-edit')
+    }
+
+    getDeviceRemoveButtonByName(deviceName) {
+      return this.getDeviceByName(deviceName).child("div").child('.device-remove')
+    }
+
+    //getEditButtonByName
+    //getEditButtonByName
+
+    async clickOnEditDeviceByName(deviceName) {
+      await t.click(this.getDeviceEditButtonByName(deviceName));
+    }
+
+    async clickOnRemoveDeviceByName(deviceName) {
+      await t.click(this.getDeviceRemoveButtonByName(deviceName));
+    }
+
     
-      async getDevice(deviceName) {
-        // Find the device element by name using text content filtering
-        const device = await this.deviceList.withText(deviceName.textContent);
-        return device;
-      }
+
+
+
+
+    //TODO
     
       async getName(deviceName) {
         // Get the device name element based on the device object
         const device = await this.getDevice(deviceName);
-        const nameElement = device.child(Selector('.device-name'));
+        const nameElement = device.child(this.deviceNameSelector);
         return await nameElement.textContent;
       }
     
@@ -43,7 +71,7 @@ class DeviceListPage {
         // Get the edit button element based on the device object
         const device = await this.getDevice(deviceName);
         const editButton = device.sibling(Selector('.device-options')).child(Selector('.device-edit'));
-        await click(editButton);
+        await t.click(editButton);
       }
     
       async clickRemove(deviceName) {
@@ -53,12 +81,11 @@ class DeviceListPage {
         await click(removeButton);
       }
 
-      //jstest save list of all devices
-      async jstestSaveDevices() {
-        const deviceCount = await this.deviceList.count;
+      async saveListOfDevices() {
+        const deviceCount = await this.deviceInfoList.count;
         const deviceList = [];
         for (let i = 0; i < deviceCount; i++) {
-          const deviceElement = await this.deviceList.nth(i);
+          const deviceElement = await this.deviceInfoList.nth(i);
           const deviceName = await deviceElement.child('.device-name').textContent;
           const deviceType = await deviceElement.child('.device-type').textContent;
           const deviceCapacity = await deviceElement.child('.device-capacity').textContent;

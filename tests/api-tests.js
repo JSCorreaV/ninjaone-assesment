@@ -1,5 +1,5 @@
 import { Selector, RequestLogger } from 'testcafe';
-import { Device } from '../models/DeviceListModel';
+import { Device } from '../models/Device';
 
 fixture`API tests`;
 
@@ -17,7 +17,7 @@ test('Get devices from API and print details', async (t) => {
   for (const device of response.body) {
     devices.push(new Device(device.id, device.system_name, device.type, device.hdd_capacity));
   }
-4
+
   // Print the total number of devices
   console.log(`Total devices from API: ${devices.length}`);
 
